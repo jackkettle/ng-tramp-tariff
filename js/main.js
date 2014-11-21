@@ -1,3 +1,16 @@
-/**
- * Created by Jack Kettle on 21/11/2014.
- */
+angular
+    .module("tariffApp", ['ngSanitize'])
+
+    .controller("mainController", function ($scope, $http, $sce) {
+
+        $scope.useroutine = new Array(10);
+
+        $http.get('json/tariff_skills.json')
+            .then(function(res){
+                $scope.moves = res.data;
+            });
+
+        $scope.parseHtml = function($scope) {
+            return $sce.trustAsHtml($scope);
+        };
+    })

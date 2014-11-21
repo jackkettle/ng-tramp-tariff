@@ -4,10 +4,18 @@
     <meta charset="UTF-8">
     <title></title>
 </head>
-<body>
+<body ng-app="tariffApp">
+    <div ng-controller="mainController">
+        <ul>
+            <li ng-repeat="move in moves">
+                <div ng-bind-html="move.skill"></div>
+                <div ng-bind-html="move.tariff"></div>
+            </li>
+        </ul>
+    </div>
 
-
-
-<script src="js/vendor/angular.min.js"></script>
+    <script src="js/vendor/angular.min.js"></script>
+    <script src="js/vendor/angular-sanitize.min.js"></script>
+    <script src="js/main.js"></script>
 </body>
 </html>
