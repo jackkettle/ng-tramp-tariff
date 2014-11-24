@@ -6,13 +6,27 @@
 </head>
 <body ng-app="tariffApp">
     <div ng-controller="mainController">
-        <ul>
-            <li ng-repeat="move in moves">
-                <div ng-bind-html="move.skill"></div>
-                <div ng-bind-html="move.tariff"></div>
-            </li>
-        </ul>
+        <select name="" id="">
+
+            <optgroup label="Novice">
+                <option ng-repeat="move in novice" value="{{move.skill}}">{{move.skill}}</option>
+            </optgroup>
+
+            <optgroup label="Intermediate">
+                <option ng-repeat="move in intermediate" value="{{move.skill}}">{{move.skill}}</option>
+            </optgroup>
+            <optgroup label="Advanced">
+                <option ng-repeat="move in advanced" value="{{move.skill}}">{{move.skill}}</option>
+            </optgroup>
+
+            <optgroup label="Elite">
+                <option ng-repeat="move in elite" value="{{move.skill}}">{{move.skill}}</option>
+            </optgroup>
+
+        </select>
     </div>
+
+
 
     <script src="js/vendor/angular.min.js"></script>
     <script src="js/vendor/angular-sanitize.min.js"></script>
