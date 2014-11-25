@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body ng-app="tariffApp">
+<div ng-controller="mainController">
+    <select name="" id="">
+        <optgroup label="Novice">
+            <option ng-repeat="move in novice" ng-bind-html="move.skill" value="{{move.skill}}">{{move.skill}}</option>
+        </optgroup>
+
+        <optgroup label="Intermediate">
+            <option ng-repeat="move in intermediate" ng-bind-html="move.skill" value="{{move.skill}}">{{move.skill}}</option>
+        </optgroup>
+        <optgroup label="Advanced">
+            <option ng-repeat="move in advanced" ng-bind-html="move.skill" value="{{move.skill}}">{{move.skill}}</option>
+        </optgroup>
+
+        <optgroup label="Elite">
+            <option ng-repeat="move in elite" value="{{move.skill}}">{{move.skill}}</option>
+        </optgroup>
+    </select>
+
+    <select ng-model="selectedMove" ng-options="move.skill group by move.level for move in moves | orderBy:['group']">
+    </select><br/>
+
+
+</div>
+
+
+
+<script src="vendor/angular/angular.min.js"></script>
+<script src="vendor/angular/angular-sanitize.min.js"></script>
+<script src="js/main.js"></script>
+</body>
+</html>

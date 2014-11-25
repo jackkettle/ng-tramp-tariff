@@ -1,7 +1,7 @@
 angular
     .module("tariffApp", ['ngSanitize'])
 
-    .controller("mainController", function ($scope, $http, $sce) {
+    .controller("mainController", function ($scope, $http) {
 
         $scope.useroutine = new Array(10);
 
@@ -13,6 +13,9 @@ angular
                 $scope.intermediate = [];
                 $scope.advanced = [];
                 $scope.elite = [];
+
+                $scope.routine = [1,2,3,4,5,6,7,8,9];
+                $scope.userRoutine = [1,2,3,4,5,6,7,8,9,10];
 
                 $scope.moves.forEach(function (move) {
 
@@ -32,13 +35,15 @@ angular
                         //console.log("Novice: " + move.skill);
                         $scope.novice.push(move);
                     }
-
-
                 });
 
             });
 
-        $scope.parseHtml = function($scope) {
-            return $sce.trustAsHtml($scope);
-        };
     })
+
+.filter('parseHtml', ['$sce', function () {
+        return function(data){
+            console.log(data);
+            return $sce.getTrustedHtml(data)
+        }
+    }])
