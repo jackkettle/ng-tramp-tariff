@@ -1,7 +1,7 @@
 angular
     .module("tariffApp", ['ngSanitize'])
 
-    .controller("mainController", function ($scope, $http) {
+    .controller("mainController", function ($scope, $http, $sce, $compile) {
 
         $scope.useroutine = new Array(10);
 
@@ -9,41 +9,30 @@ angular
             .then(function(res){
 
                 $scope.moves = res.data;
-                $scope.novice = [];
-                $scope.intermediate = [];
-                $scope.advanced = [];
-                $scope.elite = [];
 
-                $scope.routine = [1,2,3,4,5,6,7,8,9];
                 $scope.userRoutine = [1,2,3,4,5,6,7,8,9,10];
-
-                $scope.moves.forEach(function (move) {
-
-                    if(move.level == 'Elite'){
-                        //console.log("Elite: " + move.skill);
-                        $scope.elite.push(move);
+                var sum = 0;
+                for (var i = 0 ; i < $scope.userRoutine.length; i++) {
+                    if($scope.userRoutine[i].tariff){
+                        sum += $scope.userRoutine[i].tariff;
                     }
-                    else if(move.level == 'Advanced') {
-                        //console.log("Advanced: " + move.skill);
-                        $scope.advanced.push(move);
+                }
+                $scope.sum = sum;
+                
+                $scope.onChange = function () {
+                    checkTariff($scope.userRoutine);
+                }
+                
+                function checkTariff (userRoutine) {
+                    var sum = 0.0;
+                    for (var i = 0 ; i < userRoutine.length; i++) {
+                        if(userRoutine[i].tariff){
+                            sum += userRoutine[i].tariff;
+                        }
                     }
-                    else if(move.level == 'Intermediate') {
-                        //console.log("Intermediate: " + move.skill);
-                        $scope.intermediate.push(move);
-                    }
-                    else if(move.level == 'Novice') {
-                        //console.log("Novice: " + move.skill);
-                        $scope.novice.push(move);
-                    }
-                });
-
+                    $scope.sum = Math.round( sum * 10) / 10;
+                }
+                
             });
-
+    
     })
-
-.filter('parseHtml', ['$sce', function () {
-        return function(data){
-            console.log(data);
-            return $sce.getTrustedHtml(data)
-        }
-    }])

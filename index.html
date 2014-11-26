@@ -8,33 +8,67 @@
 </head>
 <body ng-app="tariffApp">
     <div ng-controller="mainController" class="container">
+        <h2>Tariff Calculator</h2>
+        
         <table class="table table-striped table-hover">
-
-            <tr ng-repeat="userskill in userRoutine">
-                <td>
-                    {{$index + 1}}
-                </td>
-                <td >
-                    <select
-                        ng-model="selectedMove"
-                        ng-options="move.skill group by move.level for move in moves | orderBy:['group']"
-                        ng-change="userRoutine[$index] = selectedMove"
-                    >
-                    </select>
-                </td>
-                <td>
-                    {{selectedMove.tariff}}
-                </td>
+            <thead>
+            <tr>
+                <td>Number</td>
+                <td>Skill</td>
+                <td>Shape</td>
+                <td>Tariff</td>
+                <td>&nbsp;</td>
             </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="userskill in userRoutine track by $index">
+                    <td>
+                        {{$index + 1}}
+                    </td>
+                    <td >
+                        <select
+                            ng-model="selectedMove"
+                            ng-change="userRoutine[$index] = selectedMove; onChange()"
+                            ng-options="move.skill group by move.level for move in moves | orderBy:'tariff':false"
+                        >
+                        </select>
+                    </td>
+                    <td >
+                        <div>
+                            <span>T</span>
+                            <input type="radio" name="chickenEgg" value="egg" ng-model="formData.chickenEgg">
+                            <span>P</span>
+                            <input type="radio" name="chickenEgg" value="egg" ng-model="formData.chickenEgg">
+                            <span>S</span>
+                            <input type="radio" name="chickenEgg" value="egg" ng-model="formData.chickenEgg">
+                        </div>
+                    </td>
+                    <td>
+                        {{selectedMove.tariff}}
+                    </td>
+                    <td>&nbsp;</td>
+                </tr>
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td><strong>{{ sum }}</strong></td>
+                    <td>&nbsp;</td>
+                </tr>
+            </tfoot>
         </table>
 
+        <!--
         <div>
             <ul>
-                <li ng-repeat="userSkill in userRoutine">{{userSkill}}</li>
+                <li ng-repeat="userSkill in userRoutine track by $index">{{userSkill}}</li>
             </ul>
         </div>
+        -->
     </div>
-
+    
     <script src="vendor/jquery/jquery-2.1.1.min.js"></script>
     <script src="vendor/bootstrap/js/bootstrap.min.js"></script>
     <script src="vendor/angular/angular.min.js"></script>
