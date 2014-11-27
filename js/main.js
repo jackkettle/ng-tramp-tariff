@@ -20,6 +20,30 @@ angular
                 $scope.sum = sum;
                 
                 $scope.onChange = function () {
+                    console.log("-------------On change--------------");
+                    for (var i = $scope.userRoutine.length - 1; i >= 1; i--) {
+                        
+                        // check if skill is set
+                        if($scope.userRoutine[i].skill){
+                            for (var j = i ; j >= 0; j--) {
+                                if($scope.userRoutine[j].skill){
+                                    for (var j = i - 1 ; j >= 0; j--) {
+                                        if($scope.userRoutine[i].skill == $scope.userRoutine[j].skill){
+                                            console.log($scope.userRoutine[i].skill + " - " + $scope.userRoutine[j].skill);
+                                            console.log(i + ": " +$scope.userRoutine[i].skill);
+                                            console.log(j + ": " +$scope.userRoutine[j].skill);
+                                            var newMove =  angular.copy($scope.userRoutine[i]);
+                                            newMove.tariff = 0;
+                                            console.log(newMove.tariff);
+                                            console.log($scope.userRoutine[i].tariff);
+                                            $scope.userRoutine[i]= newMove;
+                                            $scope.userRoutine[i].repeatMove = true;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
                     checkTariff($scope.userRoutine);
                 }
                 
