@@ -1,7 +1,7 @@
 angular
-    .module("tariffApp", ['ngSanitize'])
+    .module("tariffApp", [])
 
-    .controller("mainController", function ($scope, $http, $sce, $compile) {
+    .controller("mainController", function ($scope, $http) {
 
         $scope.useroutine = new Array(10);
 
@@ -13,8 +13,8 @@ angular
                 $scope.userRoutine = [1,2,3,4,5,6,7,8,9,10];
                  
                 $scope.onChangeSelect = function () {
-                    console.log("------------On change------------");
-                    
+          
+                    var newMove = null;
                     // check for repeat skills
                     for (var i = $scope.userRoutine.length - 1; i >= 1; i--) {
                         
@@ -23,23 +23,32 @@ angular
                             $scope.userRoutine[i].repeatMove = false;
                             // check moves below move i
                             for (var j = i - 1; j >= 0; j--) {
-                                // if its set and is the same as the move i
-                                if($scope.userRoutine[j].skill && 
-                                $scope.userRoutine[i].skill === $scope.userRoutine[j].skill &&
-                                $scope.userRoutine[i].shape &&
-                                $scope.userRoutine[i].shape === $scope.userRoutine[j].shape){
-                                    console.log("shapes");
-                                    // copy new move and set tariff to 0
-                                    var newMove = angular.copy($scope.userRoutine[i]);
+                                
+                                // if skills match and shapes match 
+                                if($scope.userRoutine[j].skill 
+                                && $scope.userRoutine[i].skill === $scope.userRoutine[j].skill 
+                                && $scope.userRoutine[i].tariff === 0){
+                                    
+                                    newMove = angular.copy($scope.userRoutine[i]);
                                     newMove.repeatMove = true;
                                     $scope.userRoutine[i] = newMove; 
+                                
+                                } else if($scope.userRoutine[j].skill 
+                                && $scope.userRoutine[i].skill === $scope.userRoutine[j].skill 
+                                && $scope.userRoutine[i].shape 
+                                && $scope.userRoutine[i].shape === $scope.userRoutine[j].shape
+                                && $scope.userRoutine[i].tariff !== 0){
                                     
-                                } else if($scope.userRoutine[j].skill && 
-                                $scope.userRoutine[i].skill === $scope.userRoutine[j].skill  &&
-                                !$scope.userRoutine[i].shape){
-                                    console.log("no shapes");
-                                    // mark move as a repeated move
-                                    var newMove = angular.copy($scope.userRoutine[i]);
+                                    newMove = angular.copy($scope.userRoutine[i]);
+                                    newMove.repeatMove = true;
+                                    $scope.userRoutine[i] = newMove; 
+                                        
+                                    
+                                } else if($scope.userRoutine[j].skill 
+                                && $scope.userRoutine[i].skill === $scope.userRoutine[j].skill  
+                                && !$scope.userRoutine[i].shape){
+                                    
+                                    newMove = angular.copy($scope.userRoutine[i]);
                                     newMove.repeatMove = true;
                                     $scope.userRoutine[i] = newMove;   
                                 }
@@ -47,8 +56,8 @@ angular
                         }
                     }
                     
-                    // update total tariff
-                    $scope.sum = checkTariff($scope.userRoutine);
+                    // update total tariff on every change
+                    $scope.sum = $scope.checkTariff($scope.userRoutine);
                 }
                 
                 $scope.checkMoveTariff = function (move) {
@@ -70,31 +79,11 @@ angular
                     }
                     return sum;
                 }
-                
-                function checkMoveTariff (move) {
-                    var sum = 0.0;
-                    if(move.repeatMove === undefined 
-                    || move.repeatMove === false){
-                        if(move.tariff && move.shape){
-                            sum += move.tariff;
-                            if(move.shape === 'straight' || move.shape === 'pike' ){
-                                sum += move.shape_bonus;
-                            }
-                            sum = Math.round( sum * 10) / 10;
-                        }else if(move.tariff){
-                            sum += move.tariff;
-                            sum = Math.round( sum * 10) / 10;
-                        } else if(move.tariff === 0){
-                            return 0.0;
-                        }
-                    }
-                    return sum;
-                }
 
-                function checkTariff (userRoutine) {
+                $scope.checkTariff = function (userRoutine) {
                     var sum = 0.0;
                     for(var i = userRoutine.length - 1; i >= 0; i--){
-                        sum += checkMoveTariff(userRoutine[i]);
+                        sum += $scope.checkMoveTariff(userRoutine[i]);
                     }
                     return Math.round( sum * 10) / 10;
                 }
